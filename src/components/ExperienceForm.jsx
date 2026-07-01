@@ -4,6 +4,7 @@ import React from "react";
 function ExperienceForm({ data, onChange }) {
   const addExperience = () => {
     const newExperience = {
+      _id: Date.now() + "_" + Math.random(),
       company: "",
       position: "",
       start_date: "",
@@ -88,7 +89,7 @@ function ExperienceForm({ data, onChange }) {
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 <input
-                  type="text"
+                  type="date"
                   placeholder="Start Date"
                   value={experience.start_date || ""}
                   onChange={(e) =>
@@ -97,7 +98,7 @@ function ExperienceForm({ data, onChange }) {
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 <input
-                  type="text"
+                  type="date"
                   placeholder="End Date"
                   disabled={experience.is_current}
                   value={experience.end_date || ""}
