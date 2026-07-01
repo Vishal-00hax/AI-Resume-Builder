@@ -25,7 +25,7 @@ function PrfessionalSummary({ data, onChange, setResumeData }) {
 
       {/* Form field */}
       <div className="flex flex-col gap-2.5">
-        <label className="text-sm font-medium text-gray-700">Message</label>
+        <label className="text-sm font-medium text-gray-700">Summary</label>
         <textarea
           placeholder="Hello, I have a query regarding your platform…"
           value={data}

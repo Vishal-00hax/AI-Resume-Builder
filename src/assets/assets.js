@@ -36,7 +36,7 @@ export const dummyResumeData = [
         company: "Tech Solutions",
         position: "Full Stack Software Engineer",
         start_date: "2024-06",
-        end_date: "Present",
+        end_date: "2024-06",
         is_current: true,
         description:
           "Architected and maintained full-stack applications. Optimized mobile application rendering speed, resolved VirtualizedList warnings, and implemented data persistence utilizing local databases and remote backend synchronization.",

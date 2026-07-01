@@ -128,6 +128,12 @@ const DeveloperTemplate = ({ data, accentColor }) => {
                 </h3>
                 <p className="text-xs text-slate-500">{edu.field_of_study}</p>
                 <p className="text-xs text-slate-400 mt-1">{edu.institution}</p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Start : {edu.start_date}
+                </p>
+                <p className="text-xs text-slate-400 mt-1">
+                  End : {edu.end_date}
+                </p>
               </div>
             ))}
           </section>

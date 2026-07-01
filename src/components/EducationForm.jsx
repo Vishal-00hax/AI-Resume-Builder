@@ -1,69 +1,66 @@
-import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
 import React from "react";
+import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
 
-function ExperienceForm({ data, onChange }) {
-  const addExperience = () => {
-    const newExperience = {
+function EducationForm({ data, onChange }) {
+  const addEducation = () => {
+    const newEducation = {
       _id: Date.now() + "_" + Math.random(),
-      company: "",
-      position: "",
+      institution: "",
+      degree: "",
+      field_of_study: "",
       start_date: "",
       end_date: "",
-      is_current: false,
       description: "",
     };
-    onChange([...data, newExperience]);
+    onChange([...data, newEducation]);
   };
 
-  const removeExperience = (index) => {
+  const removeEducation = (index) => {
     const updated = data.filter((_, i) => i !== index);
     onChange(updated);
   };
 
-  const updateExperience = (index, field, value) => {
+  const updateEducation = (index, field, value) => {
     const updated = [...data];
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
-
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="mt-6">
-        <h3 className="text-lg font-semibold text-gray-800">
-          Professional Experience
-        </h3>
-        <p className="text-sm text-gray-500 mt-0.5">Add your job experience.</p>
+        <h3 className="text-lg font-semibold text-gray-800">Education</h3>
+        <p className="text-sm text-gray-500 mt-0.5">Add your Education.</p>
       </div>
 
       <button
         type="button"
-        onClick={addExperience}
+        onClick={addEducation}
         className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
       >
         <Plus className="size-4" />
-        Add Experience
+        Add Education
       </button>
 
       {data.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-gray-400">
           <Briefcase className="size-12 mb-3 opacity-50" />
-          <p className="text-sm">No experience added yet</p>
+          <p className="text-sm">No education added yet</p>
         </div>
       ) : (
         <div className="space-y-6">
-          {data.map((experience, index) => (
+          {data.map((education, index) => (
             <div
-              key={experience._id}
+              key={education._id}
               className="p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-3"
             >
               <div className="flex items-center justify-between">
                 <h4 className="font-medium text-gray-700">
-                  Experience #{index + 1}
+                  Education #{index + 1}
                 </h4>
                 <button
                   type="button"
-                  onClick={() => removeExperience(index)}
+                  onClick={() => removeEducation(index)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
                 >
                   <Trash2 className="size-4" />
@@ -73,37 +70,46 @@ function ExperienceForm({ data, onChange }) {
                 <input
                   type="text"
                   placeholder="Company Name"
-                  value={experience.company || ""}
+                  value={education.institution || ""}
                   onChange={(e) =>
-                    updateExperience(index, "company", e.target.value)
+                    updateEducation(index, "institution", e.target.value)
                   }
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 <input
                   type="text"
                   placeholder="Position"
-                  value={experience.position || ""}
+                  value={education.degree || ""}
                   onChange={(e) =>
-                    updateExperience(index, "position", e.target.value)
+                    updateEducation(index, "degree", e.target.value)
+                  }
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Position"
+                  value={education.field_of_study || ""}
+                  onChange={(e) =>
+                    updateEducation(index, "field_of_study", e.target.value)
                   }
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 <input
                   type="month"
                   placeholder="Start Date"
-                  value={experience.start_date || ""}
+                  value={education.start_date || ""}
                   onChange={(e) =>
-                    updateExperience(index, "start_date", e.target.value)
+                    updateEducation(index, "start_date", e.target.value)
                   }
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 <input
                   type="month"
                   placeholder="End Date"
-                  disabled={experience.is_current}
-                  value={experience.end_date || ""}
+                  disabled={education.is_current}
+                  value={education.end_date || ""}
                   onChange={(e) =>
-                    updateExperience(index, "end_date", e.target.value)
+                    updateEducation(index, "end_date", e.target.value)
                   }
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
@@ -122,30 +128,13 @@ function ExperienceForm({ data, onChange }) {
               </div>
               <textarea
                 placeholder="Description"
-                value={experience.description || ""}
+                value={education.description || ""}
                 onChange={(e) =>
-                  updateExperience(index, "description", e.target.value)
+                  updateEducation(index, "description", e.target.value)
                 }
                 rows={4}
                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
               />
-              <label className="flex items-center gap-2 mt-2">
-                <input
-                  type="checkbox"
-                  checked={experience.is_current || false}
-                  onChange={(e) =>
-                    updateExperience(
-                      index,
-                      "is_current",
-                      e.target.checked ? true : false,
-                    )
-                  }
-                  className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500"
-                />
-                <span className="text-sm text-gray-700">
-                  Currently working here
-                </span>
-              </label>
             </div>
           ))}
         </div>
@@ -154,4 +143,4 @@ function ExperienceForm({ data, onChange }) {
   );
 }
 
-export default ExperienceForm;
+export default EducationForm;
