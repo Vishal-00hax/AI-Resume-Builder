@@ -46,7 +46,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
         <div className="col-span-2 space-y-8">
           <section>
             <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <span style={{ color: themeColor }}>{"//"}</span> Experience
+              Experience
             </h2>
             <div className="space-y-6">
               {experience.map((exp) => (
@@ -68,23 +68,31 @@ const DeveloperTemplate = ({ data, accentColor }) => {
 
           <section>
             <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <span style={{ color: themeColor }}>{"//"}</span> Architecture &
-              Projects
+              Architecture & Projects
             </h2>
             <div className="space-y-5">
               {project.map((proj) => (
                 <div
                   key={proj._id}
-                  className="bg-slate-50 p-4 rounded-md border border-slate-100"
+                  className="p-4 rounded-md border"
+                  style={{ backgroundColor: themeColor, color: "#fff" }}
                 >
-                  <h3 className="font-bold text-slate-800">{proj.title}</h3>
-                  <p
-                    className="text-xs font-mono mb-2 mt-1"
-                    style={{ color: themeColor }}
-                  >
+                  <h3 className="font-bold">{proj.title}</h3>
+                  <p className="text-xs font-mono mb-2 mt-1">
                     {proj.technologies.join(" ")}
                   </p>
-                  <p className="text-sm text-slate-600">{proj.description}</p>
+                  <p className="text-sm">{proj.description}</p>
+                  <p className="text-xs font-mono mb-2 mt-2">
+                    {proj.link && (
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Link : {proj.link}
+                      </a>
+                    )}
+                  </p>
                 </div>
               ))}
             </div>
@@ -110,6 +118,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
                 <span
                   key={index}
                   className="bg-slate-100 text-slate-700 text-xs font-mono px-2 py-1 rounded border border-slate-200"
+                  style={{ backgroundColor: themeColor, color: "#fff" }}
                 >
                   {skill}
                 </span>
