@@ -99,7 +99,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
               <h3 className="font-bold text-gray-900">{edu.degree}</h3>
               <p className="text-sm text-gray-600">{edu.institution}</p>
               <p className="text-xs text-gray-400 mt-1">
-                {edu.start_date} — {edu.end_date}
+                Graduation Date : {edu.graduation_date}
               </p>
             </div>
           ))}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
+import { Plus, Trash2, Sparkles, GraduationCap } from "lucide-react";
 
 function EducationForm({ data, onChange }) {
   const addEducation = () => {
@@ -8,8 +8,8 @@ function EducationForm({ data, onChange }) {
       institution: "",
       degree: "",
       field_of_study: "",
-      start_date: "",
-      end_date: "",
+      graduation_date: "",
+      gpa: "",
       description: "",
     };
     onChange([...data, newEducation]);
@@ -44,7 +44,7 @@ function EducationForm({ data, onChange }) {
 
       {data.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-gray-400">
-          <Briefcase className="size-12 mb-3 opacity-50" />
+          <GraduationCap className="size-12 mb-3 opacity-50" />
           <p className="text-sm">No education added yet</p>
         </div>
       ) : (
@@ -69,7 +69,7 @@ function EducationForm({ data, onChange }) {
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
-                  placeholder="Company Name"
+                  placeholder="Institution Name"
                   value={education.institution || ""}
                   onChange={(e) =>
                     updateEducation(index, "institution", e.target.value)
@@ -78,7 +78,7 @@ function EducationForm({ data, onChange }) {
                 />
                 <input
                   type="text"
-                  placeholder="Position"
+                  placeholder="Degree"
                   value={education.degree || ""}
                   onChange={(e) =>
                     updateEducation(index, "degree", e.target.value)
@@ -87,7 +87,7 @@ function EducationForm({ data, onChange }) {
                 />
                 <input
                   type="text"
-                  placeholder="Position"
+                  placeholder="Course of study"
                   value={education.field_of_study || ""}
                   onChange={(e) =>
                     updateEducation(index, "field_of_study", e.target.value)
@@ -96,20 +96,19 @@ function EducationForm({ data, onChange }) {
                 />
                 <input
                   type="month"
-                  placeholder="Start Date"
-                  value={education.start_date || ""}
+                  placeholder="Graduation Date"
+                  value={education.graduation_date || ""}
                   onChange={(e) =>
-                    updateEducation(index, "start_date", e.target.value)
+                    updateEducation(index, "graduation_date", e.target.value)
                   }
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 <input
-                  type="month"
-                  placeholder="End Date"
-                  disabled={education.is_current}
-                  value={education.end_date || ""}
+                  type="text"
+                  placeholder="GPA (e.g., 8.5)"
+                  value={education.gpa || ""}
                   onChange={(e) =>
-                    updateEducation(index, "end_date", e.target.value)
+                    updateEducation(index, "gpa", e.target.value)
                   }
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />

@@ -100,7 +100,7 @@ const ModernTemplate = ({ data, accentColor }) => {
                 {edu.degree} in {edu.field_of_study}
               </h3>
               <p className="text-sm text-gray-500">
-                {edu.institution} | {edu.start_date} - {edu.end_date}
+                {edu.institution} | {edu.graduation_date}
               </p>
             </div>
           ))}

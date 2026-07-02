@@ -111,7 +111,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-              Tech Stack
+              Skills
             </h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill, index) => (
@@ -138,10 +138,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
                 <p className="text-xs text-slate-500">{edu.field_of_study}</p>
                 <p className="text-xs text-slate-400 mt-1">{edu.institution}</p>
                 <p className="text-xs text-slate-400 mt-1">
-                  Start : {edu.start_date}
-                </p>
-                <p className="text-xs text-slate-400 mt-1">
-                  End : {edu.end_date}
+                  Graduation Date : {edu.graduation_date}
                 </p>
               </div>
             ))}

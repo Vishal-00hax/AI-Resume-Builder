@@ -1,7 +1,9 @@
 import React from "react";
 import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 function ProjectsForm({ data, onChange }) {
+  const [technologiesInput, setTechnologiesInput] = useState("");
   const addProject = () => {
     const newProject = {
       _id: Date.now() + "_" + Math.random(),
@@ -76,7 +78,7 @@ function ProjectsForm({ data, onChange }) {
                 />
                 <input
                   type="text"
-                  placeholder="Position"
+                  placeholder="Technologies"
                   value={
                     Array.isArray(project.technologies)
                       ? project.technologies.join(", ")
@@ -93,7 +95,7 @@ function ProjectsForm({ data, onChange }) {
                 />
                 <input
                   type="text"
-                  placeholder="Position"
+                  placeholder="Project Link"
                   value={project.link || ""}
                   onChange={(e) => updateProject(index, "link", e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"

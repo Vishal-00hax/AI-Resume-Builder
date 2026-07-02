@@ -9,6 +9,7 @@ import EducationForm from "../components/EducationForm";
 import ResumePreview from "../components/home/ResumePreview";
 import TemplateSelector from "../components/TemplateSelector";
 import ProjectsForm from "../components/ProjectsForm";
+import SkillsForm from "../components/SkillsForm";
 import ColorPicker from "../components/ColorPicker";
 import {
   ArrowLeftIcon,
@@ -209,6 +210,17 @@ function ResumeBuilder() {
                         setResumeData((perv) => ({
                           ...perv,
                           project: data,
+                        }))
+                      }
+                    />
+                  )}
+                  {activeSection.id === "skills" && (
+                    <SkillsForm
+                      data={resumeData.skills}
+                      onChange={(data) =>
+                        setResumeData((perv) => ({
+                          ...perv,
+                          skills: data,
                         }))
                       }
                     />
