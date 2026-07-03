@@ -34,45 +34,43 @@ function ResumePreview({ data, template, accentColor, classes = "" }) {
       <div
         id="resume-preview"
         className={
-          "border border-gray-200 print:shadow-none print:border-none" + classes
+          "border border-gray-200 print:shadow-none print:border-none bg-white" +
+          classes
         }
       >
         {renderTemplate()}
       </div>
-      <style jsx="true">{`
-        @page {
-          size: letter;
-          margin: 0;
-        }
-        @media print {
-          html,
-          body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-          }
-          body > *:not(#resume-preview) {
-            display: none !important;
-          }
-          #resume-preview,
-          #resume-preview * {
-            visibility: visible;
-          }
-          #resume-preview {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            box-shadow: none !important;
-            border: none !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-        }
-      `}</style>
+      <style>{`
+  @page {
+    size: letter;
+    margin: 0;
+  }
+  @media print {
+    /* Hide ALL text/elements by default */
+    body * {
+      visibility: hidden;
+    }
+    
+    /* Make the resume and all its children visible */
+    #resume-preview, #resume-preview * {
+      visibility: visible;
+    }
+    
+    /* Position the resume at the absolute top-left of the page */
+    #resume-preview {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: none !important;
+      box-shadow: none !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+`}</style>
     </div>
   );
 }

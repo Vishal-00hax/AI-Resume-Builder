@@ -56,9 +56,6 @@ function ColorPicker({ selectedColor, onChange }) {
                 {selectedColor === color.value && (
                   <Check className="absolute inset-0 m-auto w-4 h-4 text-white drop-shadow-md" />
                 )}
-                <p className="text-[10px] text-white truncate w-full text-center">
-                  {color.name}
-                </p>
               </button>
             ))}
           </div>
