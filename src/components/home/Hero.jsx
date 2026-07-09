@@ -1,9 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Hero = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const user = useSelector((store) => store.user);
+
+  console.log("User", user);
+
   return (
     <div>
       <section className="relative flex flex-col items-center bg-white text-green-500 text-sm pb-10">
@@ -44,11 +50,21 @@ const Hero = () => {
             </a>
           </div>
 
-          <Link to="/login">
-            <button className="hidden md:block bg-green-600 active:scale-95 hover:bg-green-700 transition px-6 py-2 text-white rounded-full cursor-pointer">
-              Login
-            </button>
-          </Link>
+          {user.length === 0 && (
+            <Link to="/login">
+              <button className="hidden md:block bg-green-600 active:scale-95 hover:bg-green-700 transition px-6 py-2 text-white rounded-full cursor-pointer">
+                Login
+              </button>
+            </Link>
+          )}
+
+          {user.length !== 0 && (
+            <Link to="/app">
+              <button className="hidden md:block bg-green-600 active:scale-95 hover:bg-green-700 transition px-6 py-2 text-white rounded-full cursor-pointer">
+                Dashboard
+              </button>
+            </Link>
+          )}
 
           <button
             id="open-menu"
@@ -135,10 +151,13 @@ const Hero = () => {
           </button>
         </div>
 
+        <div className="flex items-center text-green-700 text-sm mt-10">
+          <span>{user.length !== 0 ? `Welcome ${user.name}` : ""}</span>
+        </div>
         {/* Promo badge */}
         <a
           href="https://prebuiltui.com"
-          className="flex items-center gap-2 rounded-full bg-green-50 border border-green-200 p-2 mt-32"
+          className="flex items-center gap-2 rounded-full bg-green-50 border border-green-200 p-2 mt-12"
         >
           <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full">
             NEW
@@ -177,16 +196,27 @@ const Hero = () => {
 
         {/* CTA Buttons */}
         <div className="flex items-center gap-4 mt-8">
-          <Link to="/app?state=register">
-            <button className="bg-green-600 hover:bg-green-700 text-white rounded-full px-7 py-3 cursor-pointer">
-              Get Started
-            </button>
-          </Link>
-          <Link to="/app?state=login">
-            <button className="bg-green-100 hover:bg-green-200 text-green-700 rounded-full px-7 py-3 cursor-pointer border border-green-300">
-              Login
-            </button>
-          </Link>
+          {user.length === 0 ? (
+            <>
+              {" "}
+              <Link to="/app">
+                <button className="bg-green-600 hover:bg-green-700 text-white rounded-full px-7 py-3 cursor-pointer">
+                  Get Started
+                </button>
+              </Link>
+              <Link to="/login">
+                <button className="bg-green-100 hover:bg-green-200 text-green-700 rounded-full px-7 py-3 cursor-pointer border border-green-300">
+                  Login
+                </button>
+              </Link>
+            </>
+          ) : (
+            <Link to="/app">
+              <button className="bg-green-100 hover:bg-green-200 text-green-700 rounded-full px-7 py-3 cursor-pointer border border-green-300">
+                Dashboard
+              </button>
+            </Link>
+          )}
         </div>
 
         {/* Trusted by */}

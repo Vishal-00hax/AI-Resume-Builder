@@ -5,6 +5,7 @@ import api from "../components/utils/axios";
 import { login } from "../components/utils/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Login() {
   const [state, setState] = useState("login");
@@ -33,12 +34,14 @@ function Login() {
       console.log("LOCAL STORAGE:", localStorage.getItem("token"));
       dispatch(
         login({
-          user: response?.data?.user?.name,
+          user: response?.data?.user,
           token: response?.data?.token,
         }),
       );
-      navigate("/app");
+      toast.success(response.data.message || "Login successful");
+      navigate("/");
     } catch (err) {
+      toast.error(err.response?.data?.message || "Something went wrong");
       console.log(err);
     }
   };

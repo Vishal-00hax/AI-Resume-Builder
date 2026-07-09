@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "./utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "./utils/userSlice";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Navbar = () => {
   const logoutUser = () => {
     dispatch(logout());
     dispatch(removeUser());
+    toast.success("Logout successful");
     navigate("/");
   };
 
