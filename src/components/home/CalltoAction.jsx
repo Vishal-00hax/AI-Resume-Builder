@@ -11,7 +11,7 @@ function CalltoAction() {
   }
 `}</style>
 
-      <div className="max-w-5xl py-16 md:pl-20 md:w-full max-md:text-center mx-2 md:mx-auto flex flex-col md:flex-row items-center justify-between text-left bg-linear-to-b from-[#43ca04] to-[#03572d] rounded-2xl p-10 text-white mb-10">
+      <div className="max-w-5xl py-16 md:pl-20 md:w-full max-md:text-center mx-2 md:mx-auto flex flex-col md:flex-row items-center justify-between text-left bg-linear-to-b from-[#43ca04] to-[#03572d] rounded-2xl p-10 text-white mb-0">
         <div>
           <h1 className="text-4xl md:text-[46px] md:leading-15 font-semibold bg-linear-to-r from-white to-[#49e46d] text-transparent bg-clip-text">
             Ready to try-out this app?

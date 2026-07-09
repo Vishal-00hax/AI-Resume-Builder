@@ -29,6 +29,7 @@ function Preview() {
           data={resumeData}
           template={resumeData.template}
           accentColor={resumeData.accent_color}
+          classes="py-4 bg-white"
         />
       </div>
     </div>

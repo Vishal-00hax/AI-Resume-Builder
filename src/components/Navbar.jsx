@@ -1,14 +1,18 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "./utils/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "./utils/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const user = {
-    name: "Vishal",
-  };
+  const user = useSelector((store) => store.user);
 
   const logoutUser = () => {
+    dispatch(logout());
+    dispatch(removeUser());
     navigate("/");
   };
 

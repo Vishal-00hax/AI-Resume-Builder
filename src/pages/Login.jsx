@@ -1,19 +1,46 @@
 import { User2Icon, Mail, Lock } from "lucide-react";
 import React from "react";
 import { useState } from "react";
+import api from "../components/utils/axios";
+import { login } from "../components/utils/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const urlState = new URLSearchParams(window.location.search).get("state");
-  const [state, setState] = useState(urlState || "login");
-
+  const [state, setState] = useState("login");
+  console.log(state);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    emailId: "",
     password: "",
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const payload =
+        state === "login"
+          ? { emailId: formData.emailId, password: formData.password }
+          : formData;
+      const url = state === "login" ? "/api/user/login" : "/api/user/register";
+      const response = await api.post(url, payload);
+      console.log("FULL RESPONSE:", response);
+      console.log("DATA:", response.data);
+      console.log("TOKEN:", response.data.token);
+      localStorage.setItem("token", response?.data?.token);
+      console.log("LOCAL STORAGE:", localStorage.getItem("token"));
+      dispatch(
+        login({
+          user: response?.data?.user?.name,
+          token: response?.data?.token,
+        }),
+      );
+      navigate("/app");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChange = (e) => {
@@ -59,10 +86,10 @@ function Login() {
           <input
             type="email"
             id="email"
-            name="email"
+            name="emailId"
             placeholder="Email address"
             className="flex-1 border-none outline-none ring-0 bg-transparent py-2 text-sm"
-            value={formData.email}
+            value={formData.emailId}
             onChange={handleChange}
             required
             aria-required="true"
