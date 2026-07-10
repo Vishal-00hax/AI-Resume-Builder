@@ -66,7 +66,22 @@ const Dashboard = () => {
   };
 
   const editTitle = async (event) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
+
+      const formData = new FormData();
+      formData.append("resumeId", editResumeId);
+      formData.append("resumeData", JSON.stringify({ title: title }));
+
+      const res = await api.patch("/api/resume/update", formData, {
+        headers: { Authorization: `Brare ${token}` },
+      });
+      toast.success(
+        `Title Edited ${res.data.success}` || "Title Edited Successfully",
+      );
+    } catch (err) {
+      toast.error(err.response.message || "Something went wrong");
+    }
   };
 
   const deleteResume = async (resumeId) => {
@@ -132,10 +147,9 @@ const Dashboard = () => {
         <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
           {allResume.length === 0 ? (
             <>
-              {" "}
-              <p className="text-2xl font-medium mb-6 bg-linear-to-r from-slate-600 to-slate-700 bg-clip-text text-transparent sm:hidden">
-                {user.name}
-              </p>{" "}
+              <p className="text-2xl font-semibold mb-6 text-center text-gray-800">
+                No Resume Found
+              </p>
             </>
           ) : (
             allResume.map((resume, index) => {
@@ -355,6 +369,9 @@ const Dashboard = () => {
 
         {editResumeId && (
           <form
+            action="/api/resume/update"
+            enctype="multipart/form-data"
+            method="patch"
             className="fixed inset-0 bg-black/70 backdrop-blur z-10 flex items-center justify-center"
             onClick={() => setEditResumeId("")}
             onSubmit={editTitle}
