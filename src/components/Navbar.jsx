@@ -11,6 +11,8 @@ const Navbar = () => {
 
   const user = useSelector((store) => store.user);
 
+  console.log(user);
+
   const logoutUser = () => {
     dispatch(logout());
     dispatch(removeUser());

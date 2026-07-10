@@ -42,9 +42,21 @@ const Dashboard = () => {
   };
 
   const createResume = async (event) => {
-    event.preventDefault();
-    setShowCreateResume(false);
-    navigate(`/app/builder/res123`);
+    try {
+      event.preventDefault();
+      const resume = await api.post(
+        "/api/resume/create",
+        { title },
+        { headers: { Authorization: `Brare ${token}` } },
+      );
+      const resumeId = resume.data.resume._id;
+      console.log("resumeId", resumeId);
+      toast.success("Resume Created");
+      setShowCreateResume(false);
+      navigate(`/app/builder/${resumeId}`);
+    } catch (err) {
+      toast.error(err.response.message || "Something went wrong");
+    }
   };
 
   const uploadResume = async (event) => {
