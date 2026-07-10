@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import api from "../components/utils/axios";
 import toast from "react-hot-toast";
+import pdfToText from "react-pdftotext";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
   const colors = ["#9333ea", "#d97706", "#dc2626", "#0284c7", "#16a34a"];
@@ -23,10 +25,11 @@ const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [resume, setResume] = useState(null);
   const [editResumeId, setEditResumeId] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const { token } = useSelector((store) => store.auth);
-  console.log("Token", token);
+
   const user = useSelector((store) => store.user);
 
   const loadAllResumes = async () => {
@@ -35,7 +38,6 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllResume(resume.data.resume);
-      console.log(resume.data.resume);
     } catch (err) {
       toast.error(err.response.message || "Something went wrong");
     }
@@ -50,7 +52,7 @@ const Dashboard = () => {
         { headers: { Authorization: `Brare ${token}` } },
       );
       const resumeId = resume.data.resume._id;
-      console.log("resumeId", resumeId);
+
       toast.success("Resume Created");
       setShowCreateResume(false);
       navigate(`/app/builder/${resumeId}`);
@@ -60,9 +62,28 @@ const Dashboard = () => {
   };
 
   const uploadResume = async (event) => {
-    event.preventDefault();
-    setShowUpdateResume(false);
-    navigate(`/app/builder/res123`);
+    try {
+      event.preventDefault();
+      setLoading(true);
+      const pdfText = await pdfToText(resume);
+      const res = await api.post(
+        "/api/ai/upload-resume",
+        {
+          resumeText: pdfText,
+          title: title,
+        },
+        { headers: { Authorization: `Brare ${token}` } },
+      );
+      setShowUpdateResume(false);
+      const resumeId = res.data.resume;
+      toast.success("Uploade Resume Successfull");
+      navigate(`/app/builder/${resumeId}`);
+    } catch (err) {
+      toast.error(err.response.message || "Something went wrong");
+      console.log(err.response.message || err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const editTitle = async (event) => {
@@ -90,7 +111,7 @@ const Dashboard = () => {
     );
     if (confirm) {
       try {
-        const res = api.delete(`/api/resume/delete/${resumeId}`, {
+        const res = await api.delete(`/api/resume/delete/${resumeId}`, {
           headers: { Authorization: `Barer ${token}` },
         });
         setAllResume(
@@ -240,9 +261,7 @@ const Dashboard = () => {
           <form
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-10 flex items-center justify-center p-4"
             onClick={() => setShowUpdateResume(false)}
-            onSubmit={(e) => {
-              uploadResume();
-            }}
+            onSubmit={uploadResume}
           >
             <div
               className="bg-white text-gray-600 max-w-lg w-full mx-auto md:p-8 p-6 text-left rounded-2xl shadow-xl relative"
@@ -355,13 +374,20 @@ const Dashboard = () => {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 rounded-lg bg-green-700 hover:bg-green-800 active:scale-[0.98] text-white font-medium transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={!title.trim() || !resume}
-                >
-                  Update Resume
-                </button>
+
+                {loading === true ? (
+                  <>
+                    <Loader />
+                  </>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex-1 py-2.5 rounded-lg bg-green-700 hover:bg-green-800 active:scale-[0.98] text-white font-medium transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={!title.trim() || !resume}
+                  >
+                    Update Resume
+                  </button>
+                )}
               </div>
             </div>
           </form>
