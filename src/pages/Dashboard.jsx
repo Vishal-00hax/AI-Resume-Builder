@@ -74,7 +74,17 @@ const Dashboard = () => {
       "Are you sure you want to delete this resume ?",
     );
     if (confirm) {
-      setAllResume((perv) => perv.filter((resume) => resume._id !== resumeId));
+      try {
+        const res = api.delete(`/api/resume/delete/${resumeId}`, {
+          headers: { Authorization: `Barer ${token}` },
+        });
+        setAllResume(
+          (perv) => perv.filter((resume) => resume._id !== resumeId),
+          toast.success("Resume Deleted"),
+        );
+      } catch (err) {
+        toast.error(err.response.message || "Something went wrong");
+      }
     }
   };
 
