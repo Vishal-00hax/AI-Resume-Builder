@@ -1,12 +1,12 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useSelector } from "react-redux";
 import Login from "./Login";
+import { useSelector } from "react-redux";
 
 function Layout() {
   const auth = useSelector((store) => store.auth);
-  console.log("Auth", auth);
+  const token = auth.token;
   return (
     <div>
       {auth?.token ? (

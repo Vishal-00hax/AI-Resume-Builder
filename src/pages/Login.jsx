@@ -34,7 +34,6 @@ function Login() {
       console.log("LOCAL STORAGE:", localStorage.getItem("token"));
       dispatch(
         login({
-          user: response?.data?.user,
           token: response?.data?.token,
         }),
       );
