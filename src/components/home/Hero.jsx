@@ -8,8 +8,6 @@ const Hero = () => {
 
   const user = useSelector((store) => store.user);
 
-  console.log("User", user);
-
   return (
     <div>
       <section className="relative flex flex-col items-center bg-white text-green-500 text-sm pb-10">

@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const auth = useSelector((store) => store.auth);
   const token = auth.token;
-
+  console.log("Auth", auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,6 +29,10 @@ function Home() {
         dispatch(addUser(res.data.data));
       }
     } catch (err) {
+      if (err.response.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
       console.log(err.response.message || err.response);
     }
   };

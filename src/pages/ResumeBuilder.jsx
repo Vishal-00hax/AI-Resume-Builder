@@ -79,8 +79,9 @@ function ResumeBuilder() {
       : 0;
 
   const handleShare = () => {
-    const frontendUrl = window.location.href.split("/app")[0];
-    const resumeUrl = frontendUrl + "/view/" + resumeId;
+    const baseUrl = window.location.href.split("/app")[0];
+    const resumeUrl = `${baseUrl}/view/${resumeId}`;
+
     if (navigator.share) {
       navigator
         .share({
@@ -90,31 +91,12 @@ function ResumeBuilder() {
         })
         .catch((error) => {
           if (error.name !== "AbortError") {
-            console.error("Share failed:", error);
-            copyLink(url);
+            prompt("Copy this link:", resumeUrl);
           }
         });
     } else {
-      copyLink(url);
+      prompt("Copy this link:", resumeUrl);
     }
-  };
-
-  const copyLink = (url) => {
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        alert("Link copied to clipboard!");
-      })
-      .catch(() => {
-        // Fallback for older browsers
-        const textarea = document.createElement("textarea");
-        textarea.value = url;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-        alert("Link copied to clipboard!");
-      });
   };
 
   const downloadResume = () => {

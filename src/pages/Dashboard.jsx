@@ -11,6 +11,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { dummyResumeData } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import api from "../components/utils/axios";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const colors = ["#9333ea", "#d97706", "#dc2626", "#0284c7", "#16a34a"];
@@ -22,8 +25,20 @@ const Dashboard = () => {
   const [editResumeId, setEditResumeId] = useState("");
   const navigate = useNavigate();
 
+  const { token } = useSelector((store) => store.auth);
+  console.log("Token", token);
+  const user = useSelector((store) => store.user);
+
   const loadAllResumes = async () => {
-    setAllResume(dummyResumeData);
+    try {
+      const resume = await api.get("/api/user/resume", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAllResume(resume.data.resume);
+      console.log(resume.data.resume);
+    } catch (err) {
+      toast.error(err.response.message || "Something went wrong");
+    }
   };
 
   const createResume = async (event) => {
@@ -60,7 +75,7 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Optional welcome message (visible only on mobile) */}
         <p className="text-2xl font-medium mb-6 bg-linear-to-r from-slate-600 to-slate-700 bg-clip-text text-transparent sm:hidden">
-          Welcome, JohonDoe
+          {user.name}
         </p>
 
         {/* This container shrinks to fit the buttons, so the <hr /> stays under them */}
@@ -93,50 +108,59 @@ const Dashboard = () => {
           <hr className="border-slate-300 w-full" />
         </div>
         <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
-          {allResume.map((resume, index) => {
-            const baseColor = colors[index % colors.length];
-            return (
-              <button
-                key={index}
-                onClick={() => navigate(`/app/builder/${resume._id}`)}
-                className="relative w-full sm:max-w-36 h-48 flex flex-col items-center justify-center rounded-lg gap-2 border group hover:shadow-lg transition-all duration-300 cursor-pointer mt-5"
-                style={{
-                  background: `linear-gradient(135deg, ${baseColor}10,${baseColor}40)`,
-                  borderColor: baseColor + "40",
-                }}
-              >
-                <FilePenLine
-                  className="size-7 group-hover:scale-105 transition-all"
-                  style={{ color: baseColor }}
-                />
-                <p className="text-sm group-hover:scale-105 transition-all px-2 text-center">
-                  {resume?.title}
-                </p>
-                <p
-                  className="absolute bottom-1 text-11px text-slate-400 group-hover:text-slate-500 transition-all duration-300 px-2 text-center"
-                  style={{ color: baseColor + "90" }}
+          {allResume.length === 0 ? (
+            <>
+              {" "}
+              <p className="text-2xl font-medium mb-6 bg-linear-to-r from-slate-600 to-slate-700 bg-clip-text text-transparent sm:hidden">
+                {user.name}
+              </p>{" "}
+            </>
+          ) : (
+            allResume.map((resume, index) => {
+              const baseColor = colors[index % colors.length];
+              return (
+                <button
+                  key={index}
+                  onClick={() => navigate(`/app/builder/${resume._id}`)}
+                  className="relative w-full sm:max-w-36 h-48 flex flex-col items-center justify-center rounded-lg gap-2 border group hover:shadow-lg transition-all duration-300 cursor-pointer mt-5"
+                  style={{
+                    background: `linear-gradient(135deg, ${baseColor}10,${baseColor}40)`,
+                    borderColor: baseColor + "40",
+                  }}
                 >
-                  Update on {new Date(resume?.updatedAt).toLocaleDateString()}
-                </p>
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  className="absolute top-1 right-1 group-hover:flex items-center hidden"
-                >
-                  <TrashIcon
-                    onClick={() => deleteResume(resume?._id)}
-                    className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
+                  <FilePenLine
+                    className="size-7 group-hover:scale-105 transition-all"
+                    style={{ color: baseColor }}
                   />
-                  <PencilIcon
-                    onClick={() => {
-                      setEditResumeId(resume?._id);
-                      setTitle(resume?.title);
-                    }}
-                    className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
-                  />
-                </div>
-              </button>
-            );
-          })}
+                  <p className="text-sm group-hover:scale-105 transition-all px-2 text-center">
+                    {resume?.title}
+                  </p>
+                  <p
+                    className="absolute bottom-1 text-11px text-slate-400 group-hover:text-slate-500 transition-all duration-300 px-2 text-center"
+                    style={{ color: baseColor + "90" }}
+                  >
+                    Update on {new Date(resume?.updatedAt).toLocaleDateString()}
+                  </p>
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute top-1 right-1 group-hover:flex items-center hidden"
+                  >
+                    <TrashIcon
+                      onClick={() => deleteResume(resume?._id)}
+                      className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
+                    />
+                    <PencilIcon
+                      onClick={() => {
+                        setEditResumeId(resume?._id);
+                        setTitle(resume?.title);
+                      }}
+                      className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
+                    />
+                  </div>
+                </button>
+              );
+            })
+          )}
         </div>
         {showCreateResume && (
           <form
