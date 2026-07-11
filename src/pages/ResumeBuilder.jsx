@@ -155,6 +155,20 @@ function ResumeBuilder() {
       const response = await api.patch("/api/resume/update", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      const apiResumeData = response.data.resume;
+
+      setResumeData({
+        ...apiResumeData,
+        personal_info: apiResumeData.personal_info || {},
+        professional_summary: apiResumeData.professional_summary || "",
+        experience: apiResumeData.experience || [],
+        education: apiResumeData.education || [],
+        project: apiResumeData.project || [],
+        skills: apiResumeData.skills || [],
+        template: apiResumeData.template || "minimalist",
+        accent_color: apiResumeData.accent_color || "#3B82F6",
+        public: apiResumeData.public || true,
+      });
 
       if (response.data.success === true) {
         toast.success("Saved Changes");
