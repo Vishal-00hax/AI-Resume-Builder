@@ -15,6 +15,7 @@ function PersonalInfoForm({
   onChange,
   removeBackground,
   setRemoveBackground,
+  accent_color,
 }) {
   const handleChange = (field, value) => {
     onChange({ ...data, [field]: value });
@@ -55,8 +56,6 @@ function PersonalInfoForm({
     { key: "website", label: "Persssional Website", icon: Globe, type: "url" },
   ];
 
-  console.log("Type of image", typeof data?.image);
-
   return (
     <div className="space-y-6">
       {/* Header – aligned with summary section styling */}
@@ -80,6 +79,12 @@ function PersonalInfoForm({
                   : URL.createObjectURL(data?.image)
               }
               alt="User"
+              /* Apply the dynamic accent color as the background only when removeBackground is true */
+              style={{
+                backgroundColor: removeBackground
+                  ? accent_color
+                  : "transparent",
+              }}
               className="w-16 h-16 rounded-full object-cover ring-2 ring-slate-200 group-hover:ring-slate-300 transition-all"
             />
           ) : (

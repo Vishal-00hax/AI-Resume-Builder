@@ -4,7 +4,6 @@ import { Plus, Trash2, Sparkles, GraduationCap } from "lucide-react";
 function EducationForm({ data, onChange }) {
   const addEducation = () => {
     const newEducation = {
-      _id: Date.now() + "_" + Math.random(),
       institution: "",
       degree: "",
       field_of_study: "",

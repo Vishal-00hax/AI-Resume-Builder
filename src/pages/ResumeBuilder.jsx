@@ -300,6 +300,7 @@ function ResumeBuilder() {
                   {activeSection.id === "personal" && (
                     <PersonalInfoForm
                       data={resumeData.personal_info}
+                      accent_color={resumeData.accent_color}
                       onChange={(data) =>
                         setResumeData((perv) => ({
                           ...perv,

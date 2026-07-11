@@ -6,7 +6,6 @@ function ProjectsForm({ data, onChange }) {
   const [technologiesInput, setTechnologiesInput] = useState("");
   const addProject = () => {
     const newProject = {
-      _id: Date.now() + "_" + Math.random(),
       title: "",
       technologies: [],
       link: "",

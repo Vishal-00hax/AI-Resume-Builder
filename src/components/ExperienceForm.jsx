@@ -4,7 +4,6 @@ import React from "react";
 function ExperienceForm({ data, onChange }) {
   const addExperience = () => {
     const newExperience = {
-      _id: Date.now() + "_" + Math.random(),
       company: "",
       position: "",
       start_date: "",
