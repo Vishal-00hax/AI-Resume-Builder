@@ -27,12 +27,7 @@ function PersonalInfoForm({
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      // reader.result is a base64 data URL
-      onChange({ ...data, image: reader.result });
-    };
-    reader.readAsDataURL(file);
+    onChange({ ...data, image: file });
   };
 
   const fields = [

@@ -34,7 +34,6 @@ import {
 function ResumeBuilder() {
   const { resumeId } = useParams();
   const [resumeData, setResumeData] = useState({
-    _id: "",
     title: "",
     personal_info: {},
     professional_summary: "",
@@ -47,8 +46,11 @@ function ResumeBuilder() {
     public: true,
   });
 
+  console.log("Resume Data", resumeData);
+
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [removeBackground, setRemoveBackground] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { token } = useSelector((store) => store.auth);
 
@@ -133,24 +135,20 @@ function ResumeBuilder() {
 
   const saveChanges = async () => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("resumeId", resumeId);
-      formData.append("resumeData", JSON.stringify(resumeData));
       formData.append("removeBackground", String(removeBackground));
 
       const image = resumeData?.personal_info?.image;
-      if (image && typeof image !== "string") {
-        formData.append("image", image);
-      } else if (
-        image &&
-        typeof image === "string" &&
-        image.startsWith("data:image")
-      ) {
-        // Convert Base64 data URL to a File object
-        const blob = await fetch(image).then((res) => res.blob());
-        const file = new File([blob], "Resume.png", { type: blob.type });
-        formData.append("image", file);
+      const senitizedData = JSON.parse(JSON.stringify(resumeData));
+
+      if (senitizedData.personal_info) {
+        delete senitizedData.personal_info.image;
       }
+      formData.append("resumeData", JSON.stringify(resumeData));
+
+      formData.append("image", image);
 
       const response = await api.patch("/api/resume/update", formData, {
         headers: { Authorization: `Bearer ${token}` },
@@ -177,6 +175,8 @@ function ResumeBuilder() {
       const errText =
         err.response?.data?.message || err.message || "Something went wrong";
       toast.error(errText);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -370,9 +370,10 @@ function ResumeBuilder() {
                 </div>
                 <button
                   onClick={saveChanges}
+                  disabled={loading}
                   className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium mt-4"
                 >
-                  Save Changes
+                  {loading === true ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </div>

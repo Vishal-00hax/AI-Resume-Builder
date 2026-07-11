@@ -7,25 +7,40 @@ import MinimalistTemplate from "../Templates/MinimalistTemplate";
 
 function ResumePreview({ data, template, accentColor, classes = "" }) {
   const renderTemplate = () => {
+    // Changing the personal_info.image image to blob URL
+    const img = data?.personal_info?.image;
+    const imageUrl = img instanceof Blob ? URL.createObjectURL(img) : img;
+
+    const previewData = {
+      ...data,
+      personal_info: { ...data?.personal_info, image: imageUrl },
+    };
+
     switch (template) {
       case "modren":
-        return <ModernTemplate data={data} accentColor={accentColor} />;
+        return <ModernTemplate data={previewData} accentColor={accentColor} />;
         break;
 
       case "minimalist":
-        return <MinimalistTemplate data={data} accentColor={accentColor} />;
+        return (
+          <MinimalistTemplate data={previewData} accentColor={accentColor} />
+        );
         break;
 
       case "classic":
-        return <ClassicTemplate data={data} accentColor={accentColor} />;
+        return <ClassicTemplate data={previewData} accentColor={accentColor} />;
         break;
 
       case "developer":
-        return <DeveloperTemplate data={data} accentColor={accentColor} />;
+        return (
+          <DeveloperTemplate data={previewData} accentColor={accentColor} />
+        );
         break;
 
       default:
-        return <ProfessionalTemplate data={data} accentColor={accentColor} />;
+        return (
+          <ProfessionalTemplate data={previewData} accentColor={accentColor} />
+        );
         break;
     }
   };
