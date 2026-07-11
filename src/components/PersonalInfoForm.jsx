@@ -8,7 +8,7 @@ import {
   User,
 } from "lucide-react";
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function PersonalInfoForm({
   data,
@@ -20,6 +20,7 @@ function PersonalInfoForm({
     onChange({ ...data, [field]: value });
   };
 
+  const fileInputRef = useRef(null);
   // for set the image to url
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -43,9 +44,8 @@ function PersonalInfoForm({
     },
     {
       key: "email",
-      label: "Email Addresh",
+      label: "Email Address",
       icon: Mail,
-      type: "email ",
       required: true,
     },
     { key: "phone", label: "Phone Number", icon: Phone, type: "tel" },
@@ -54,6 +54,8 @@ function PersonalInfoForm({
     { key: "linked", label: "Linked Profile", icon: Link, type: "url" },
     { key: "website", label: "Persssional Website", icon: Globe, type: "url" },
   ];
+
+  console.log("Type of image", typeof data?.image);
 
   return (
     <div className="space-y-6">
@@ -90,11 +92,15 @@ function PersonalInfoForm({
             type="file"
             accept="image/jpeg, image/png"
             className="hidden"
+            ref={fileInputRef}
             onChange={handleFileChange}
+            onClick={(e) => {
+              e.target.value = null; // Allows re-selecting the same file
+            }}
           />
         </label>
 
-        {typeof data?.image === "object" && (
+        {data?.image && (
           <div className="flex items-center gap-3 text-sm bg-slate-50 px-3 py-2 rounded-full border border-slate-200">
             <span className="text-gray-600">Remove Background</span>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -104,6 +110,7 @@ function PersonalInfoForm({
                 onChange={() => setRemoveBackground((prev) => !prev)}
                 checked={removeBackground}
               />
+
               <div className="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-green-600 transition-colors duration-200 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4 peer-checked:after:border-white"></div>
             </label>
           </div>
@@ -123,7 +130,7 @@ function PersonalInfoForm({
               </label>
               <input
                 type={field.type}
-                value={data[field.key] ?? ""}
+                value={data?.[field.key] ?? ""}
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all placeholder:text-gray-400 hover:border-gray-400"
                 placeholder={`Enter ${field.label.toLowerCase()}`}

@@ -11,6 +11,9 @@ import TemplateSelector from "../components/TemplateSelector";
 import ProjectsForm from "../components/ProjectsForm";
 import SkillsForm from "../components/SkillsForm";
 import ColorPicker from "../components/ColorPicker";
+import api from "../components/utils/axios";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import {
   ArrowLeftIcon,
   Briefcase,
@@ -25,6 +28,7 @@ import {
   Download,
   EyeOffIcon,
   EyeIcon,
+  ToyBrick,
 } from "lucide-react";
 
 function ResumeBuilder() {
@@ -46,11 +50,35 @@ function ResumeBuilder() {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [removeBackground, setRemoveBackground] = useState(false);
 
+  const { token } = useSelector((store) => store.auth);
+
   const loadExistingResume = async () => {
-    const resume = dummyResumeData.find((resume) => resume._id === resumeId);
-    if (resume) {
-      setResumeData(resume);
-      document.title = resume.title;
+    try {
+      const resume = await api.get(`/api/resume/get/${resumeId}`, {
+        headers: { Authorization: `Brare ${token}` },
+      });
+
+      const apiResumeData = resume.data.resume;
+
+      setResumeData({
+        ...apiResumeData,
+        personal_info: apiResumeData.personal_info || {},
+        professional_summary: apiResumeData.professional_summary || "",
+        experience: apiResumeData.experience || [],
+        education: apiResumeData.education || [],
+        project: apiResumeData.project || [],
+        skills: apiResumeData.skills || [],
+        template: apiResumeData.template || "minimalist",
+        accent_color: apiResumeData.accent_color || "#3B82F6",
+        public: apiResumeData.public || true,
+      });
+
+      //Share pdf title
+      document.title = apiResumeData.title;
+    } catch (err) {
+      const errText =
+        err.response.message || err.response || "Something went wrong";
+      toast.error(errText);
     }
   };
 
@@ -101,6 +129,41 @@ function ResumeBuilder() {
 
   const downloadResume = () => {
     window.print();
+  };
+
+  const saveChanges = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("resumeId", resumeId);
+      formData.append("resumeData", JSON.stringify(resumeData));
+      formData.append("removeBackground", String(removeBackground));
+
+      const image = resumeData?.personal_info?.image;
+      if (image && typeof image !== "string") {
+        formData.append("image", image);
+      } else if (
+        image &&
+        typeof image === "string" &&
+        image.startsWith("data:image")
+      ) {
+        // Convert Base64 data URL to a File object
+        const blob = await fetch(image).then((res) => res.blob());
+        const file = new File([blob], "Resume.png", { type: blob.type });
+        formData.append("image", file);
+      }
+
+      const response = await api.patch("/api/resume/update", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data.success === true) {
+        toast.success("Saved Changes");
+      }
+    } catch (err) {
+      const errText =
+        err.response?.data?.message || err.message || "Something went wrong";
+      toast.error(errText);
+    }
   };
 
   return (
@@ -290,7 +353,10 @@ function ResumeBuilder() {
                     />
                   )}
                 </div>
-                <button className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium mt-4">
+                <button
+                  onClick={saveChanges}
+                  className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium mt-4"
+                >
                   Save Changes
                 </button>
               </div>
