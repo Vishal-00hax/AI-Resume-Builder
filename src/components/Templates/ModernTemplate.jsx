@@ -1,23 +1,29 @@
 import React from "react";
 
-const ModernTemplate = ({ data, accentColor }) => {
+const ModernTemplate = ({ data, accentColor, isBgRemoved }) => {
   const { personal_info, professional_summary, skills, experience, education } =
     data;
-  const themeColor = accentColor || "#374151";
 
   return (
     <div className="max-w-4xl mx-auto bg-white flex min-h-264 shadow-sm font-sans">
       <aside
         className="w-1/3 p-8 text-white"
-        style={{ backgroundColor: themeColor }}
+        style={{ backgroundColor: accentColor }}
       >
         <div className="mb-12">
           {personal_info.image && (
-            <img
-              src={personal_info.image}
-              alt="Profile"
-              className="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-4 border-white/20"
-            />
+            <div
+              className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white/20"
+              style={{
+                backgroundColor: isBgRemoved ? accentColor : "transparent",
+              }}
+            >
+              <img
+                src={personal_info.image}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
           )}
           <h1 className="text-3xl font-bold mb-2 leading-tight">
             {personal_info.full_name}
@@ -51,7 +57,7 @@ const ModernTemplate = ({ data, accentColor }) => {
 
       <main className="w-2/3 p-10 text-gray-800">
         <section className="mb-10">
-          <h2 className="text-xl font-bold mb-4" style={{ color: themeColor }}>
+          <h2 className="text-xl font-bold mb-4" style={{ color: accentColor }}>
             Profile
           </h2>
           <p className="text-sm leading-relaxed text-gray-600">
@@ -60,7 +66,7 @@ const ModernTemplate = ({ data, accentColor }) => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-bold mb-6" style={{ color: themeColor }}>
+          <h2 className="text-xl font-bold mb-6" style={{ color: accentColor }}>
             Experience
           </h2>
           <div className="space-y-6">
@@ -68,11 +74,11 @@ const ModernTemplate = ({ data, accentColor }) => {
               <div
                 key={exp._id}
                 className="relative pl-4 border-l-2"
-                style={{ borderColor: themeColor }}
+                style={{ borderColor: accentColor }}
               >
                 <div
                   className="absolute w-3 h-3 rounded-full -left-1.75 top-1.5"
-                  style={{ backgroundColor: themeColor }}
+                  style={{ backgroundColor: accentColor }}
                 ></div>
                 <h3 className="text-md font-semibold text-gray-900">
                   {exp.position}
@@ -91,7 +97,7 @@ const ModernTemplate = ({ data, accentColor }) => {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold mb-6" style={{ color: themeColor }}>
+          <h2 className="text-xl font-bold mb-6" style={{ color: accentColor }}>
             Education
           </h2>
           {education.map((edu) => (

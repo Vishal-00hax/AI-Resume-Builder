@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeveloperTemplate = ({ data, accentColor }) => {
+const DeveloperTemplate = ({ data, accentColor, isBgRemoved }) => {
   const {
     personal_info,
     professional_summary,
@@ -9,18 +9,24 @@ const DeveloperTemplate = ({ data, accentColor }) => {
     project,
     education,
   } = data;
-  const themeColor = accentColor || "#3B82F6";
 
   return (
     <div className="max-w-4xl mx-auto p-10 bg-white text-slate-800 shadow-sm">
       <header className="mb-8 flex justify-between items-end border-b-2 border-slate-200 pb-6">
         <div className="flex items-center gap-6">
           {personal_info.image && (
-            <img
-              src={personal_info.image}
-              alt="Profile"
-              className="w-24 h-24 rounded-lg object-cover border-2 border-slate-100"
-            />
+            <div
+              className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white/20"
+              style={{
+                backgroundColor: isBgRemoved ? accentColor : "transparent",
+              }}
+            >
+              <img
+                src={personal_info.image}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
           )}
           <div>
             <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -28,7 +34,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
             </h1>
             <p
               className="text-lg font-medium mt-1"
-              style={{ color: themeColor }}
+              style={{ color: accentColor }}
             >
               {personal_info.profession}
             </p>
@@ -75,7 +81,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
                 <div
                   key={proj._id}
                   className="p-4 rounded-md border"
-                  style={{ backgroundColor: themeColor, color: "#fff" }}
+                  style={{ backgroundColor: accentColor, color: "#fff" }}
                 >
                   <h3 className="font-bold">{proj.title}</h3>
                   <p className="text-xs font-mono mb-2 mt-1">
@@ -118,7 +124,7 @@ const DeveloperTemplate = ({ data, accentColor }) => {
                 <span
                   key={index}
                   className="bg-slate-100 text-slate-700 text-xs font-mono px-2 py-1 rounded border border-slate-200"
-                  style={{ backgroundColor: themeColor, color: "#fff" }}
+                  style={{ backgroundColor: accentColor, color: "#fff" }}
                 >
                   {skill}
                 </span>

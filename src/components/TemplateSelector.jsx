@@ -40,9 +40,9 @@ function TemplateSelector({ selectedTemplate, onChange }) {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
       >
-        <Layout size={16} className="text-gray-500" />
+        <Layout size={16} className="text-white" />
         <span>Template</span>
       </button>
 

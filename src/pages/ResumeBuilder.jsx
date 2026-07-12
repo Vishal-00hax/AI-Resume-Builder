@@ -75,6 +75,10 @@ function ResumeBuilder() {
         public: apiResumeData.public || true,
       });
 
+      setRemoveBackground(
+        apiResumeData.personal_info?.removeBackground ?? false,
+      );
+
       //Share pdf title
       document.title = apiResumeData.title;
     } catch (err) {
@@ -180,6 +184,17 @@ function ResumeBuilder() {
     }
   };
 
+  const handleBgToggle = (newValue) => {
+    setRemoveBackground(newValue);
+    setResumeData((prev) => ({
+      ...prev,
+      personal_info: {
+        ...prev.personal_info,
+        removeBackground: newValue,
+      },
+    }));
+  };
+
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 py-6 print:hidden">
@@ -244,55 +259,54 @@ function ResumeBuilder() {
 
               {/* Optional: show current section name */}
               <div className="text-center mt-2">
-                <div className="flex flex-wrap items-center gap-2 [&_button]:px-3 [&_button]:py-1 [&_button]:text-xs [&_button]:gap-1.5 [&_button]:rounded-full [&_button]:font-medium [&_button]:transition-all [&_button]:duration-200">
+                <div className="flex flex-wrap items-center gap-3">
                   {/* Navigation buttons */}
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-2.5">
                     <button
                       type="button"
                       onClick={() =>
                         setActiveSectionIndex((prev) => Math.max(prev - 1))
                       }
                       disabled={activeSectionIndex === 0}
-                      className={`flex items-center border ${
+                      className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md border transition-all duration-200 ${
                         activeSectionIndex === 0
-                          ? "text-gray-400 cursor-not-allowed bg-gray-100 border-gray-200"
-                          : "text-gray-700 hover:text-gray-900 hover:bg-gray-100 active:scale-95 border-gray-300 hover:border-gray-400 shadow-sm hover:shadow"
+                          ? "text-gray-400 bg-gray-100 border-gray-200 cursor-not-allowed shadow-none"
+                          : "text-gray-700 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400 shadow-sm hover:shadow active:scale-95"
                       }`}
                     >
-                      <ChevronLeft className="size-3.5" />
+                      <ChevronLeft className="size-4" />
                       Back
                     </button>
 
+                    <TemplateSelector
+                      selectedTemplate={resumeData.template}
+                      onChange={(template) =>
+                        setResumeData((prev) => ({ ...prev, template }))
+                      }
+                    />
+
+                    <ColorPicker
+                      selectedColor={resumeData.accent_color}
+                      onChange={(color) =>
+                        setResumeData((prev) => ({
+                          ...prev,
+                          accent_color: color,
+                        }))
+                      }
+                    />
                     {activeSectionIndex < sections.length - 1 && (
                       <button
                         type="button"
                         onClick={() =>
                           setActiveSectionIndex((prev) => Math.max(prev + 1))
                         }
-                        className="flex items-center text-white shadow-md hover:shadow-lg active:scale-95 bg-linear-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 border-0"
+                        className="flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-md text-white shadow-md hover:shadow-lg hover:shadow-green-500/25 active:scale-95 bg-linear-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 border-0 transition-all duration-200"
                       >
                         Next
-                        <ChevronRight className="size-3.5" />
+                        <ChevronRight className="size-4" />
                       </button>
                     )}
                   </div>
-
-                  <TemplateSelector
-                    selectedTemplate={resumeData.template}
-                    onChange={(template) =>
-                      setResumeData((prev) => ({ ...prev, template }))
-                    }
-                  />
-
-                  <ColorPicker
-                    selectedColor={resumeData.accent_color}
-                    onChange={(color) =>
-                      setResumeData((prev) => ({
-                        ...prev,
-                        accent_color: color,
-                      }))
-                    }
-                  />
                 </div>
 
                 {/* Form Content */}
@@ -307,8 +321,9 @@ function ResumeBuilder() {
                           personal_info: data,
                         }))
                       }
+                      loading={loading}
                       removeBackground={removeBackground}
-                      setRemoveBackground={setRemoveBackground}
+                      onRemoveBackgroundToggle={handleBgToggle}
                     />
                   )}
                   {activeSection.id === "summary" && (
@@ -386,6 +401,9 @@ function ResumeBuilder() {
               data={resumeData}
               template={resumeData.template}
               accentColor={resumeData.accent_color}
+              removeBackground={
+                resumeData.personal_info?.removeBackground || false
+              }
             />
           </div>
         </div>

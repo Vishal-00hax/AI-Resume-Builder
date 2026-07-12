@@ -5,7 +5,13 @@ import DeveloperTemplate from "../Templates/DeveloperTemplate";
 import ProfessionalTemplate from "../Templates/ProfessionalTemplate";
 import MinimalistTemplate from "../Templates/MinimalistTemplate";
 
-function ResumePreview({ data, template, accentColor, classes = "" }) {
+function ResumePreview({
+  data,
+  template,
+  accentColor,
+  removeBackground,
+  classes = "",
+}) {
   const renderTemplate = () => {
     // Changing the personal_info.image image to blob URL
     const img = data?.personal_info?.image;
@@ -18,28 +24,52 @@ function ResumePreview({ data, template, accentColor, classes = "" }) {
 
     switch (template) {
       case "modren":
-        return <ModernTemplate data={previewData} accentColor={accentColor} />;
+        return (
+          <ModernTemplate
+            data={previewData}
+            accentColor={accentColor}
+            isBgRemoved={removeBackground}
+          />
+        );
         break;
 
       case "minimalist":
         return (
-          <MinimalistTemplate data={previewData} accentColor={accentColor} />
+          <MinimalistTemplate
+            data={previewData}
+            accentColor={accentColor}
+            isBgRemoved={removeBackground}
+          />
         );
         break;
 
       case "classic":
-        return <ClassicTemplate data={previewData} accentColor={accentColor} />;
+        return (
+          <ClassicTemplate
+            data={previewData}
+            accentColor={accentColor}
+            isBgRemoved={removeBackground}
+          />
+        );
         break;
 
       case "developer":
         return (
-          <DeveloperTemplate data={previewData} accentColor={accentColor} />
+          <DeveloperTemplate
+            data={previewData}
+            accentColor={accentColor}
+            isBgRemoved={removeBackground}
+          />
         );
         break;
 
       default:
         return (
-          <ProfessionalTemplate data={previewData} accentColor={accentColor} />
+          <ProfessionalTemplate
+            data={previewData}
+            accentColor={accentColor}
+            isBgRemoved={removeBackground}
+          />
         );
         break;
     }

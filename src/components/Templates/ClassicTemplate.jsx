@@ -1,23 +1,28 @@
 import React from "react";
 
-const ClassicTemplate = ({ data, accentColor }) => {
+const ClassicTemplate = ({ data, accentColor, isBgRemoved }) => {
   const { personal_info, professional_summary, skills, experience, education } =
     data;
-  const themeColor = accentColor || "#4F46E5";
 
   return (
     <div
       className="max-w-4xl mx-auto p-12 bg-gray-50 text-gray-800 font-sans shadow-sm border-t-8"
-      style={{ borderColor: themeColor }}
+      style={{ borderColor: accentColor }}
     >
       <header className="mb-10 flex flex-col items-center text-center">
         {personal_info.image && (
-          <img
-            src={personal_info.image}
-            alt="Profile"
-            className="w-28 h-28 rounded-full mb-5 object-cover border-4 shadow-sm"
-            style={{ borderColor: themeColor }}
-          />
+          <div
+            className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white/20"
+            style={{
+              backgroundColor: isBgRemoved ? accentColor : "transparent",
+            }}
+          >
+            <img
+              src={personal_info.image}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
         )}
         <h1 className="text-5xl font-semibold text-gray-900 tracking-tight mb-3">
           {personal_info.full_name}
@@ -61,7 +66,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
                   </h3>
                   <p
                     className="text-sm font-medium"
-                    style={{ color: themeColor }}
+                    style={{ color: accentColor }}
                   >
                     {exp.company}
                   </p>

@@ -14,8 +14,9 @@ function PersonalInfoForm({
   data,
   onChange,
   removeBackground,
-  setRemoveBackground,
+  onRemoveBackgroundToggle,
   accent_color,
+  loading,
 }) {
   const handleChange = (field, value) => {
     onChange({ ...data, [field]: value });
@@ -100,14 +101,14 @@ function PersonalInfoForm({
           />
         </label>
 
-        {data?.image && (
+        {!loading && data?.image && (
           <div className="flex items-center gap-3 text-sm bg-slate-50 px-3 py-2 rounded-full border border-slate-200">
             <span className="text-gray-600">Remove Background</span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 className="sr-only peer"
-                onChange={() => setRemoveBackground((prev) => !prev)}
+                onChange={(e) => onRemoveBackgroundToggle(e.target.checked)}
                 checked={removeBackground}
               />
 

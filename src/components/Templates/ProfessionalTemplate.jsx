@@ -1,20 +1,19 @@
 import React from "react";
 
-const ProfessionalTemplate = ({ data, accentColor }) => {
+const ProfessionalTemplate = ({ data, accentColor, isBgRemoved }) => {
   const { personal_info, professional_summary, skills, experience, project } =
     data;
-  const themeColor = accentColor || "#111827";
 
   return (
     <div className="max-w-4xl mx-auto p-10 bg-white font-serif text-gray-900 shadow-sm">
       <header
         className="mb-6 border-b-2 pb-6 flex justify-between items-center"
-        style={{ borderBottomColor: themeColor }}
+        style={{ borderBottomColor: accentColor }}
       >
         <div>
           <h1
             className="text-3xl font-bold uppercase tracking-wider mb-2"
-            style={{ color: themeColor }}
+            style={{ color: accentColor }}
           >
             {personal_info.full_name}
           </h1>
@@ -34,11 +33,18 @@ const ProfessionalTemplate = ({ data, accentColor }) => {
         </div>
 
         {personal_info.image && (
-          <img
-            src={personal_info.image}
-            alt="Profile"
-            className="w-20 h-20 rounded object-cover ml-4 shadow-sm"
-          />
+          <div
+            className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white/20"
+            style={{
+              backgroundColor: isBgRemoved ? accentColor : "transparent",
+            }}
+          >
+            <img
+              src={personal_info.image}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
         )}
       </header>
 
@@ -51,7 +57,7 @@ const ProfessionalTemplate = ({ data, accentColor }) => {
       <section className="mb-6">
         <h2
           className="text-lg font-bold uppercase border-b mb-4 pb-1"
-          style={{ borderBottomColor: themeColor }}
+          style={{ borderBottomColor: accentColor }}
         >
           Technical Skills
         </h2>
@@ -63,7 +69,7 @@ const ProfessionalTemplate = ({ data, accentColor }) => {
       <section className="mb-6">
         <h2
           className="text-lg font-bold uppercase border-b mb-4 pb-1"
-          style={{ borderBottomColor: themeColor }}
+          style={{ borderBottomColor: accentColor }}
         >
           Professional Experience
         </h2>
@@ -86,7 +92,7 @@ const ProfessionalTemplate = ({ data, accentColor }) => {
       <section>
         <h2
           className="text-lg font-bold uppercase border-b mb-4 pb-1"
-          style={{ borderBottomColor: themeColor }}
+          style={{ borderBottomColor: accentColor }}
         >
           Key Projects
         </h2>

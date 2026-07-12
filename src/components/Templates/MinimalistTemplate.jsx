@@ -1,6 +1,6 @@
 import React from "react";
 
-const MinimalistTemplate = ({ data, accentColor }) => {
+const MinimalistTemplate = ({ data, accentColor, isBgRemoved }) => {
   const {
     personal_info,
     professional_summary,
@@ -9,21 +9,27 @@ const MinimalistTemplate = ({ data, accentColor }) => {
     education,
     project,
   } = data;
-  const themeColor = accentColor || "#111827";
 
   return (
     <div className="max-w-4xl mx-auto p-12 bg-white text-gray-800 font-sans shadow-sm">
       <header className="mb-10 flex flex-col items-center text-center">
         {personal_info.image && (
-          <img
-            src={personal_info.image}
-            alt="Profile"
-            className="w-24 h-24 rounded-full mb-5 object-cover"
-          />
+          <div
+            className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white/20"
+            style={{
+              backgroundColor: isBgRemoved ? accentColor : "transparent",
+            }}
+          >
+            <img
+              src={personal_info.image}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
         )}
         <h1
           className="text-4xl font-light tracking-wide mb-2"
-          style={{ color: themeColor }}
+          style={{ color: accentColor }}
         >
           {personal_info.full_name}
         </h1>
@@ -50,7 +56,7 @@ const MinimalistTemplate = ({ data, accentColor }) => {
       <section className="mb-10">
         <h2
           className="text-xs font-bold uppercase tracking-widest mb-6"
-          style={{ color: themeColor }}
+          style={{ color: accentColor }}
         >
           Experience
         </h2>
@@ -77,7 +83,7 @@ const MinimalistTemplate = ({ data, accentColor }) => {
       <section className="mb-10">
         <h2
           className="text-xs font-bold uppercase tracking-widest mb-6"
-          style={{ color: themeColor }}
+          style={{ color: accentColor }}
         >
           Projects
         </h2>
@@ -99,7 +105,7 @@ const MinimalistTemplate = ({ data, accentColor }) => {
       <section className="mb-10">
         <h2
           className="text-xs font-bold uppercase tracking-widest mb-6"
-          style={{ color: themeColor }}
+          style={{ color: accentColor }}
         >
           Skills
         </h2>
