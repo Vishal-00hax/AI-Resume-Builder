@@ -1,7 +1,14 @@
 import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
 import React from "react";
+import api from "../components/utils/axios";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function ExperienceForm({ data, onChange }) {
+  const [loading, setLoading] = useState(false);
+  const { token } = useSelector((store) => store.auth);
+
   const addExperience = () => {
     const newExperience = {
       company: "",
@@ -23,6 +30,39 @@ function ExperienceForm({ data, onChange }) {
     const updated = [...data];
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
+  };
+
+  const enhanceExperienceDescription = async (index) => {
+    try {
+      setLoading(true);
+      const currentDescription = data[index]?.description;
+      console.log("currentDescription", currentDescription);
+      if (
+        !currentDescription ||
+        !currentDescription.trim() ||
+        currentDescription === ""
+      ) {
+        return toast.error(
+          "Please enter a description first before enhancing.",
+        );
+      }
+      const userPrompt = `enhance my experience description: ${currentDescription}`;
+      const res = await api.post(
+        "/api/ai/enhance-job-disc",
+        {
+          userContent: userPrompt,
+        },
+        { headers: { Authorization: `Berar ${token}` } },
+      );
+      updateExperience(index, "description", res.data.data);
+      toast.success("Experience Description Enhanced");
+    } catch (err) {
+      const errText =
+        err.response.message || err.response || "Something Went Wrong";
+      toast.error(errText);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,7 +93,7 @@ function ExperienceForm({ data, onChange }) {
         <div className="space-y-6">
           {data.map((experience, index) => (
             <div
-              key={experience._id}
+              key={experience._id || index}
               className="p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-3"
             >
               <div className="flex items-center justify-between">
@@ -112,11 +152,13 @@ function ExperienceForm({ data, onChange }) {
                   Description
                 </label>
                 <button
+                  onClick={() => enhanceExperienceDescription(index)}
                   type="button"
+                  disabled={loading}
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
                 >
                   <Sparkles className="size-3" />
-                  AI Enhance
+                  {!loading ? "AI Enhance" : "Enhanceing..."}
                 </button>
               </div>
               <textarea

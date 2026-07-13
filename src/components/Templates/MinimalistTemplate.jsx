@@ -61,8 +61,8 @@ const MinimalistTemplate = ({ data, accentColor, isBgRemoved }) => {
           Experience
         </h2>
         <div className="space-y-8">
-          {experience.map((exp) => (
-            <div key={exp._id} className="grid grid-cols-12 gap-4">
+          {experience.map((exp, index) => (
+            <div key={exp._id || index} className="grid grid-cols-12 gap-4">
               <div className="col-span-3 text-xs text-gray-500 mt-1">
                 {exp.start_date} — {exp.is_current ? "Present" : exp.end_date}
               </div>
@@ -80,6 +80,41 @@ const MinimalistTemplate = ({ data, accentColor, isBgRemoved }) => {
         </div>
       </section>
 
+      {/* NEW: Education Section */}
+      <section className="mb-10">
+        <h2
+          className="text-xs font-bold uppercase tracking-widest mb-6"
+          style={{ color: accentColor }}
+        >
+          Education
+        </h2>
+        <div className="space-y-6">
+          {education?.map((edu, index) => (
+            <div key={edu._id || index} className="grid grid-cols-12 gap-4">
+              <div className="col-span-3 text-xs text-gray-500 mt-1">
+                {edu.graduation_date}
+              </div>
+              <div className="col-span-9">
+                <h3 className="text-sm font-semibold text-gray-900">
+                  {edu.field_of_study}
+                </h3>
+                <p className="text-sm text-gray-500 mb-1">{edu.institution}</p>
+                {edu.score && (
+                  <p className="text-xs text-gray-500">
+                    Grade / Score: {edu.gpa}
+                  </p>
+                )}
+                {edu.description && (
+                  <p className="text-sm text-gray-600 leading-relaxed mt-2">
+                    {edu.description}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="mb-10">
         <h2
           className="text-xs font-bold uppercase tracking-widest mb-6"
@@ -88,8 +123,8 @@ const MinimalistTemplate = ({ data, accentColor, isBgRemoved }) => {
           Projects
         </h2>
         <div className="space-y-6">
-          {project.map((proj) => (
-            <div key={proj._id}>
+          {project.map((proj, index) => (
+            <div key={proj._id || index}>
               <h3 className="text-sm font-semibold text-gray-900">
                 {proj.title}
               </h3>

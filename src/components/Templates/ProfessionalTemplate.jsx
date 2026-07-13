@@ -74,8 +74,8 @@ const ProfessionalTemplate = ({ data, accentColor, isBgRemoved }) => {
           Professional Experience
         </h2>
         <div className="space-y-6">
-          {experience.map((exp) => (
-            <div key={exp._id}>
+          {experience.map((exp, index) => (
+            <div key={exp._id || index}>
               <div className="flex justify-between items-baseline mb-1">
                 <h3 className="font-bold text-md">{exp.position}</h3>
                 <span className="text-sm font-semibold">
@@ -97,8 +97,8 @@ const ProfessionalTemplate = ({ data, accentColor, isBgRemoved }) => {
           Key Projects
         </h2>
         <div className="space-y-4">
-          {project.map((proj) => (
-            <div key={proj._id}>
+          {project.map((proj, index) => (
+            <div key={proj._id || index}>
               <div className="flex justify-between items-baseline">
                 <h3 className="font-bold text-sm">{proj.title}</h3>
                 <span className="text-xs text-gray-600">

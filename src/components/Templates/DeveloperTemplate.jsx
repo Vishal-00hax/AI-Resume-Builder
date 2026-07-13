@@ -55,8 +55,8 @@ const DeveloperTemplate = ({ data, accentColor, isBgRemoved }) => {
               Experience
             </h2>
             <div className="space-y-6">
-              {experience.map((exp) => (
-                <div key={exp._id}>
+              {experience.map((exp, index) => (
+                <div key={exp._id || index}>
                   <h3 className="font-bold text-slate-800 text-lg">
                     {exp.company}
                   </h3>
@@ -77,9 +77,9 @@ const DeveloperTemplate = ({ data, accentColor, isBgRemoved }) => {
               Architecture & Projects
             </h2>
             <div className="space-y-5">
-              {project.map((proj) => (
+              {project.map((proj, index) => (
                 <div
-                  key={proj._id}
+                  key={proj._id || index}
                   className="p-4 rounded-md border"
                   style={{ backgroundColor: accentColor, color: "#fff" }}
                 >
@@ -136,8 +136,8 @@ const DeveloperTemplate = ({ data, accentColor, isBgRemoved }) => {
             <h2 className="text-lg font-bold text-slate-900 mb-3 border-b border-slate-200 pb-2">
               Education
             </h2>
-            {education.map((edu) => (
-              <div key={edu._id} className="mb-3">
+            {education.map((edu, index) => (
+              <div key={edu._id || index} className="mb-3">
                 <h3 className="text-sm font-bold text-slate-800">
                   {edu.degree}
                 </h3>

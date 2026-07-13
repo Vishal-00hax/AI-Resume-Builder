@@ -1,9 +1,14 @@
 import React from "react";
 import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
 import { useState } from "react";
+import api from "../components/utils/axios";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 function ProjectsForm({ data, onChange }) {
   const [technologiesInput, setTechnologiesInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { token } = useSelector((store) => store.auth);
   const addProject = () => {
     const newProject = {
       title: "",
@@ -24,6 +29,31 @@ function ProjectsForm({ data, onChange }) {
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
+
+  const enhanceProjectDescription = async (index) => {
+    try {
+      setLoading(true);
+      const currentDescription = data[index]?.description;
+      if (!currentDescription || currentDescription === "") {
+        return toast.error("Education Description Enhanced");
+      }
+      const userprompt = `enhance my project description: ${currentDescription}`;
+      const res = await api.post(
+        "/api/ai/enhance-job-disc",
+        { userContent: userprompt },
+        { headers: { Authorization: `Berara ${token}` } },
+      );
+      updateProject(index, "description", res.data.data);
+      toast.success("Education Description Enhanced");
+    } catch (err) {
+      const errText =
+        err.response.message || err.response || "Something Went Wrong";
+      toast.error(errText);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -50,7 +80,7 @@ function ProjectsForm({ data, onChange }) {
         <div className="space-y-6">
           {data.map((project, index) => (
             <div
-              key={project._id}
+              key={project._id || index}
               className="p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-3"
             >
               <div className="flex items-center justify-between">
@@ -106,10 +136,11 @@ function ProjectsForm({ data, onChange }) {
                 </label>
                 <button
                   type="button"
+                  onClick={() => enhanceProjectDescription(index)}
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
                 >
                   <Sparkles className="size-3" />
-                  AI Enhance
+                  {!loading ? "AI Enhance" : "Enhanceing..."}
                 </button>
               </div>
               <textarea

@@ -335,7 +335,6 @@ function ResumeBuilder() {
                           professional_summary: data,
                         }))
                       }
-                      setResumeData={setResumeData}
                     />
                   )}
                   {activeSection.id === "experience" && (
