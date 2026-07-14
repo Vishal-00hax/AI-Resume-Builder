@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 function ProjectsForm({ data, onChange }) {
   const [technologiesInput, setTechnologiesInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [enhanceIndex, setEnhanceIndex] = useState(-1);
   const { token } = useSelector((store) => store.auth);
   const addProject = () => {
     const newProject = {
@@ -33,6 +34,7 @@ function ProjectsForm({ data, onChange }) {
   const enhanceProjectDescription = async (index) => {
     try {
       setLoading(true);
+      setEnhanceIndex(index);
       const currentDescription = data[index]?.description;
       if (!currentDescription || currentDescription === "") {
         return toast.error("Education Description Enhanced");
@@ -51,6 +53,7 @@ function ProjectsForm({ data, onChange }) {
       toast.error(errText);
     } finally {
       setLoading(false);
+      setEnhanceIndex(-1);
     }
   };
 
@@ -137,10 +140,11 @@ function ProjectsForm({ data, onChange }) {
                 <button
                   type="button"
                   onClick={() => enhanceProjectDescription(index)}
+                  disabled={enhanceIndex === index || loading}
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
                 >
                   <Sparkles className="size-3" />
-                  {!loading ? "AI Enhance" : "Enhanceing..."}
+                  {enhanceIndex === index ? "Enhanceing..." : "AI Enhance"}
                 </button>
               </div>
               <textarea

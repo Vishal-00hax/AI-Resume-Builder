@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function ExperienceForm({ data, onChange }) {
   const [loading, setLoading] = useState(false);
+  const [enhanceIndex, setEnhanceIndex] = useState(-1);
   const { token } = useSelector((store) => store.auth);
 
   const addExperience = () => {
@@ -35,6 +36,7 @@ function ExperienceForm({ data, onChange }) {
   const enhanceExperienceDescription = async (index) => {
     try {
       setLoading(true);
+      setEnhanceIndex(index);
       const currentDescription = data[index]?.description;
       console.log("currentDescription", currentDescription);
       if (
@@ -62,6 +64,7 @@ function ExperienceForm({ data, onChange }) {
       toast.error(errText);
     } finally {
       setLoading(false);
+      setEnhanceIndex(-1);
     }
   };
 
@@ -154,11 +157,11 @@ function ExperienceForm({ data, onChange }) {
                 <button
                   onClick={() => enhanceExperienceDescription(index)}
                   type="button"
-                  disabled={loading}
+                  disabled={enhanceIndex === index || loading}
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
                 >
                   <Sparkles className="size-3" />
-                  {!loading ? "AI Enhance" : "Enhanceing..."}
+                  {enhanceIndex === index ? "Enhanceing..." : "AI Enhance"}
                 </button>
               </div>
               <textarea

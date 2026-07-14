@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function EducationForm({ data, onChange }) {
   const [loading, setLoading] = useState(false);
+  const [enhanceIndex, setEnhanceIndex] = useState(-1);
   const { token } = useSelector((store) => store.auth);
 
   const addEducation = () => {
@@ -35,6 +36,7 @@ function EducationForm({ data, onChange }) {
   const enhanceEducationDescription = async (index) => {
     try {
       setLoading(true);
+      setEnhanceIndex(index);
       const currentEducation = data[index]?.description;
       const userPrompt = `enhance my eduction description: ${currentEducation}`;
       const res = await api.post(
@@ -52,6 +54,7 @@ function EducationForm({ data, onChange }) {
       toast.error(errText);
     } finally {
       setLoading(false);
+      setEnhanceIndex(-1);
     }
   };
 
@@ -150,11 +153,11 @@ function EducationForm({ data, onChange }) {
                 <button
                   type="button"
                   onClick={() => enhanceEducationDescription(index)}
-                  disabled={loading}
+                  disabled={enhanceIndex === index || loading}
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
                 >
                   <Sparkles className="size-3" />
-                  {!loading ? "AI Enhance" : "Enhanceing..."}
+                  {enhanceIndex === index ? "Enhanceing..." : "AI Enhance"}
                 </button>
               </div>
               <textarea

@@ -4,16 +4,29 @@ import { useState, useEffect } from "react";
 import { dummyResumeData } from "../assets/assets";
 import ResumePreview from "../components/home/ResumePreview";
 import Loader from "../components/Loader";
+import api from "../components/utils/axios";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 function Preview() {
   const { resumeId } = useParams();
   const [resumeData, setresumeData] = useState(null);
   const [loading, setLoaading] = useState(true);
 
+  const { token } = useSelector((store) => store.auth);
+
   const loadResumeData = async () => {
-    setresumeData(
-      dummyResumeData.find((resume) => resume._id === resumeId || null),
-    );
+    try {
+      const res = await api.get(`/api/resume/get/${resumeId}`, {
+        headers: { Authorization: `Berar ${token}` },
+      });
+      setresumeData(res.data.resume);
+      toast.success("Resume");
+    } catch (err) {
+      const errText =
+        err.response.message || err.response || "Something went wrong";
+      toast.error(errText);
+    }
   };
 
   useEffect(() => {
